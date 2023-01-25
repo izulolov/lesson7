@@ -23,7 +23,8 @@ class InterfaceMethod
     5. Добавлять или удалять станцию    6. Назначать маршрут поезду
     7. Добавлять вагоны к поезду    8. Отцеплять вагоны от поезда
     9. Перемещать поезд по маршруту вперед или назад    10. Просматривать список станций
-    11. Cписок поездов на станции    12. Выводить список вагонов у поезда)
+    11. Cписок поездов на станции    12. Выводить список вагонов у поезда
+    13. Выводить список поездов на станции    14. Занимать место или объем в вагоне)
   end
 
   # Создать станцию
@@ -291,7 +292,52 @@ class InterfaceMethod
     if train.nil?
       puts 'Не нашли поезд с таким номером!'
     else
-      train.all_wagon.each { |wg| puts "#{wg.wagon_number} - #{wg.type} - #{wg.size}" }
+      train.block_wagon_in_train(train) { |wg| puts "#{wg.wagon_number} - #{wg.type} - #{wg.free_volume} - #{wg.volume_occupied}" }
+    end
+  end
+
+  # Выводить список поездов на станции
+  def show_station_train
+    puts 'Поезда какой станции хотите посмотреть? Введите название поезда'
+    name = gets.chomp
+    station = @stations.detect { |st| st.name == name }
+    if station.nil?
+      puts 'Не нашли поезд с таким названием'
+    else
+      station.block_train_in_station(station) { |tr| puts "#{tr.number} - #{tr.type} - #{tr.wagon_count}" }
+    end
+  end
+
+  # Рекдактировать вагон
+  def edit_wagon
+    puts 'Введите номер вагона для того, чтобы занят место/объем в вагоне'
+    number = gets.chomp
+    wagon = @wagons.detect { |wg| wg.wagon_number == number }
+    if wagon.nil?
+      puts 'Не удалось найти вагон с таким номером! Попробуйте еще раз.'
+    else
+      puts "№#{wagon.wagon_number} - #{wagon.type} - #{wagon.free_volume} - #{wagon.volume_occupied}"
+      if wagon.type == 'Cargo'
+        puts 'Сколько объем(тонн) хотите занимать?'
+        volume = gets.chomp.to_i
+        wagon.take_volume(volume)
+        puts "Добавили #{volume} к вагону #{wagon.wagon_number}"
+        puts "№#{wagon.wagon_number} - #{wagon.type} - #{wagon.free_volume} - #{wagon.volume_occupied}"
+      else
+        puts 'В пассажирском поезде место можно занимать по подну за раз.'
+        puts 'Введите 1 для того, чтобы занимать место, 0 для того чтобы выйти.'
+        while true
+          place = gets.chomp
+          if place == '1'
+            wagon.take_volume
+            puts "Заняли одно место в вагоне #{wagon.wagon_number}"
+            puts "№#{wagon.wagon_number} - #{wagon.type} - #{wagon.free_volume} - #{wagon.volume_occupied}"
+          else
+            break if place == '0'
+            puts 'Надо было ввести 0 или 1'
+          end
+        end
+      end
     end
   end
 end

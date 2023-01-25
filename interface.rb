@@ -9,7 +9,7 @@ class Interface
       print 'Введите номер команды: '
       select = gets.chomp.to_i
       case select
-      
+
       # Выход
       when 0
         puts 'До новых встреч!'
@@ -58,10 +58,18 @@ class Interface
       # Список поездов на станции
       when 11
         interface_method_object.trains_in_station
-      
+
       # Список вагонов в поезда
       when 12
         interface_method_object.show_train_wagon
+
+      # Выводить список поездов на станции
+      when 13
+        interface_method_object.show_station_train
+      
+      #Занимать место или объем в вагоне
+      when 14
+        interface_method_object.edit_wagon
       else
         puts 'Надо выбрать один из предложенных вариантов!'
       end

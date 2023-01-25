@@ -27,6 +27,12 @@ class Train
     register_instance
   end
 
+  # Написать метод, который принимает блок и проходит по всем вагонам поезда, передавая каждый объект вагона в блок.
+  def block_wagon_in_train(train, &block)
+    block_given? ? (train.all_wagon.each &block) : (puts 'Этот метод может принимать блок. Попробуйте еще раз!')
+  end
+
+  # Проверка является ли поезд валидным
   def valid?
     validate!
     true

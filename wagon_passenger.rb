@@ -5,17 +5,17 @@ class WagonPassenger < Wagon
   end
 
   # Добавить метод, который "занимает места" в вагоне (по одному за раз)
-  def take_place
+  def take_volume
     take_place!
   end
 
   # Добавить метод, который возвращает кол-во занятых мест в вагоне
-  def place_occupied
+  def volume_occupied
     @size_occupied
   end
 
   # Добавить метод, возвращающий кол-во свободных мест в вагоне.
-  def free_place
+  def free_volume
     size - @size_occupied
   end
 
@@ -25,17 +25,3 @@ class WagonPassenger < Wagon
     @size_occupied += 1 if size - @size_occupied >= 0
   end
 end
-=begin
-
-obj = WagonPassenger.new(80)
-
-puts obj.type
-puts obj.size
-
-obj.take_place
-obj.take_place
-obj.take_place
-
-puts obj.place_occupied
-puts obj.free_place
-=end

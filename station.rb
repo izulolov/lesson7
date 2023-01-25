@@ -21,6 +21,11 @@ class Station
     register_instance
   end
 
+  # написать метод, который принимает блок и проходит по всем поездам на станции, передавая каждый поезд в блок
+  def block_train_in_station(station, &block)
+    block_given? ? (station.trains.each &block) : (puts 'Этот метод может принимать блок. Попробуйте еще раз!')
+  end
+
   # Может принимать поезда (по одному за раз)
   def get_train(train)
     get_train!(train)
